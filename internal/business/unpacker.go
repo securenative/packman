@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type PackmanUnpacker struct {
@@ -27,6 +28,8 @@ func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string)
 		return err
 	}
 
+	_ = os.Setenv("PACKMAN_PROJECT", packmanPath(destPath))
+
 	scriptFile := filepath.Join(packmanPath(destPath), "main.go")
 	if err := this.scriptEngine.Run(scriptFile, args); err != nil {
 		return err
@@ -38,7 +41,7 @@ func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string)
 	}
 
 	return filepath.Walk(destPath, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
+		if !info.IsDir() && !strings.Contains(path, ".git") && !strings.Contains(path, "packman") {
 			content, err := ioutil.ReadFile(path)
 			if err != nil {
 				return err

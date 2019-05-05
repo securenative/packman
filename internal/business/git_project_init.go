@@ -57,6 +57,7 @@ func (this *GitProjectInit) write(filePath string, content string) error {
 const replyScript = `package main
 
 import (
+	"os"
 	pm "github.com/securenative/packman/pkg"
 )
 
@@ -67,11 +68,11 @@ type MyData struct {
 
 func main() {
 	// Args sent by packman's driver will be forwarded to here:
-	args := os.Args[1:]
+	args := os.Args[2:]
 
 	// Build your own model to represent the templating you need
 	model := MyData{PackageName: "my_pkg", Args: args}
-	
+
 	// Reply to packman's driver:
 	pm.Reply(model)
 }

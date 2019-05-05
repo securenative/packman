@@ -6,17 +6,28 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
-func TestPackmanUnpacker_Unpack(t *testing.T) {
+const expected = `
+package my_pkg
+func main() {
+fmt.Println("Hello")
+fmt.Println("World")
+}`
 
+func TestPackmanUnpacker_Unpack(t *testing.T) {
+	replacer := strings.NewReplacer("\n", "", "\t", "")
 	unpacker := NewPackmanUnpacker(&mockBackend{}, data.NewGoTemplateEngine(), data.NewGoScriptEngine())
 
 	path := filepath.Join(os.TempDir(), "packtest", "unpack")
 	err := unpacker.Unpack("my-pkg", path, []string{"Hello", "World"})
-
 	assert.Nil(t, err)
+
+	bytes, err := ioutil.ReadFile(filepath.Join(path, "testfile.go"))
+	assert.Nil(t, err)
+	assert.Equal(t, replacer.Replace(expected), replacer.Replace(string(bytes)))
 
 	_ = os.RemoveAll(path)
 }
