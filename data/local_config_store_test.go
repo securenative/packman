@@ -22,7 +22,7 @@ func TestMain(m *testing.M) {
 
 	status := m.Run()
 
-	err = os.Remove(path)
+	err = os.RemoveAll(path)
 	if err != nil {
 		panic(err)
 	}
