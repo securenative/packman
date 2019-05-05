@@ -9,18 +9,14 @@ import (
 
 const replyFile = "reply.json"
 
-func Reply(data interface{}) error {
-	pwd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
+func Reply(projectPath string, data interface{}) error {
 
 	bytes, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
 
-	destPath := filepath.Join(pwd, replyFile)
+	destPath := filepath.Join(projectPath, replyFile)
 	if err = ioutil.WriteFile(destPath, bytes, os.ModePerm); err != nil {
 		return err
 	}
