@@ -1,4 +1,4 @@
-package internal
+package data
 
 // A place we can store packages
 type Backend interface {
