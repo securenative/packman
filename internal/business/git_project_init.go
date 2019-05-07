@@ -63,6 +63,7 @@ import (
 
 type MyData struct {
 	PackageName string
+	ProjectPath string
 	Flags map[string]string
 }
 
@@ -71,7 +72,11 @@ func main() {
 	flags := ParseFlags(os.Args[2:])
 
 	// Build your own model to represent the templating you need
-	model := MyData{PackageName: "my_pkg", Flags: flags}
+	model := MyData{
+		PackageName: flags[pm.PackageNameFlag], 
+		ProjectPath: flags[pm.PackagePathFlag], 
+		Flags: flags,
+	}
 
 	// Reply to packman's driver:
 	pm.Reply(model)

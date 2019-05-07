@@ -1,6 +1,9 @@
 package data
 
-import "os/exec"
+import (
+	"fmt"
+	"os/exec"
+)
 
 type GoScriptEngine struct {
 }
@@ -17,5 +20,12 @@ func (this *GoScriptEngine) Run(scriptFile string, args []string) error {
 	cmdArgs = append(cmdArgs, args...)
 
 	cmd := exec.Command("go", cmdArgs...)
-	return cmd.Run()
+	result, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(string(result))
+
+	return nil
 }

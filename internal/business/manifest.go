@@ -9,6 +9,7 @@ type Packer interface {
 
 // Encapsulates all logic required for unpacking a project
 type Unpacker interface {
+	DryUnpack(sourcePath string, destPath string, args []string) error
 	Unpack(name string, destPath string, args []string) error
 }
 

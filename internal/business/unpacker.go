@@ -1,6 +1,7 @@
 package business
 
 import (
+	. "github.com/otiai10/copy"
 	"github.com/securenative/packman/internal/data"
 	"github.com/securenative/packman/pkg"
 	"io/ioutil"
@@ -19,6 +20,26 @@ func NewPackmanUnpacker(backend data.Backend, templateEngine data.TemplateEngine
 	return &PackmanUnpacker{backend: backend, templateEngine: templateEngine, scriptEngine: scriptEngine}
 }
 
+func (this *PackmanUnpacker) DryUnpack(sourcePath string, destPath string, args []string) error {
+	if err := os.RemoveAll(destPath); err != nil {
+		return err
+	}
+
+	if err := Copy(sourcePath, destPath); err != nil {
+		return err
+	}
+
+	if err := this.render(destPath, args); err != nil {
+		return err
+	}
+
+	if err := this.clean(destPath); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string) error {
 	if err := os.MkdirAll(destPath, os.ModePerm); err != nil {
 		return err
@@ -28,6 +49,30 @@ func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string)
 		return err
 	}
 
+	if err := this.render(destPath, args); err != nil {
+		return err
+	}
+
+	if err := this.clean(destPath); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (this *PackmanUnpacker) clean(destPath string) error {
+	if err := os.RemoveAll(filepath.Join(destPath, ".git")); err != nil {
+		return err
+	}
+
+	if err := os.RemoveAll(filepath.Join(destPath, "packman")); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (this *PackmanUnpacker) render(destPath string, args []string) error {
 	_ = os.Setenv("PACKMAN_PROJECT", packmanPath(destPath))
 
 	scriptFile := filepath.Join(packmanPath(destPath), "main.go")
@@ -59,14 +104,6 @@ func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string)
 		return nil
 	})
 	if err != nil {
-		return err
-	}
-
-	if err := os.RemoveAll(filepath.Join(destPath, ".git")); err != nil {
-		return err
-	}
-
-	if err := os.RemoveAll(filepath.Join(destPath, "packman")); err != nil {
 		return err
 	}
 
