@@ -6,6 +6,9 @@ import (
 	"gopkg.in/urfave/cli.v2"
 )
 
+const PackageNameFlag = "package_name"
+const PackagePathFlag = "package_path"
+
 var UnpackCommand = cli.Command{
 	Name:      "unpack",
 	Aliases:   []string{"u"},
@@ -28,7 +31,11 @@ var UnpackCommand = cli.Command{
 			return errors.New("you must provide a path to the project")
 		}
 
-		return PackmanModule.Unpacker.Unpack(packageName, path, flagsArray(context))
+		flags := flagsArray(context)
+		flags = append(flags, PackageNameFlag, packageName)
+		flags = append(flags, PackagePathFlag, path)
+
+		return PackmanModule.Unpacker.Unpack(packageName, path, flags)
 	},
 }
 
