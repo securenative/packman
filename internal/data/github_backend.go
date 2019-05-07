@@ -48,12 +48,22 @@ func (this *GithubBackend) Push(name string, source string) error {
 		return err
 	}
 
-	clearRemote := exec.Command("git", "remote", "rm", "origin")
-	clearRemote.Dir = source
-	err = clearRemote.Run()
+	gitListFiles := exec.Command("git", "ls-files")
+	gitListFiles.Dir = source
+	changedFiles, err := gitListFiles.Output()
 	if err != nil {
 		return err
 	}
+
+	gitCommit := exec.Command("git", "commit", "-m", string(changedFiles))
+	gitCommit.Dir = source
+	if err := gitCommit.Run(); err != nil {
+		return err
+	}
+
+	clearRemote := exec.Command("git", "remote", "rm", "origin")
+	clearRemote.Dir = source
+	_ = clearRemote.Run()
 
 	addRemote := exec.Command("git", "remote", "add", "origin", githubUrl(name))
 	addRemote.Dir = source
@@ -64,8 +74,7 @@ func (this *GithubBackend) Push(name string, source string) error {
 
 	push := exec.Command("git", "push", "-u", "origin", "master")
 	push.Dir = source
-	bytes, err := push.Output()
-	fmt.Println(bytes)
+	err = push.Run()
 	return err
 }
 
