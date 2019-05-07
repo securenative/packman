@@ -38,6 +38,22 @@ func (this *GithubBackend) Push(name string, source string) error {
 	}
 
 	err = this.getOrCreateRepository(gh, splitName, cfg)
+	if err != nil {
+		return err
+	}
+
+	gitAdd := exec.Command("git", "add", ".")
+	gitAdd.Dir = source
+	if err := gitAdd.Run(); err != nil {
+		return err
+	}
+
+	clearRemote := exec.Command("git", "remote", "rm", "origin")
+	clearRemote.Dir = source
+	err = clearRemote.Run()
+	if err != nil {
+		return err
+	}
 
 	addRemote := exec.Command("git", "remote", "add", "origin", githubUrl(name))
 	addRemote.Dir = source
@@ -48,7 +64,8 @@ func (this *GithubBackend) Push(name string, source string) error {
 
 	push := exec.Command("git", "push", "-u", "origin", "master")
 	push.Dir = source
-	err = push.Run()
+	bytes, err := push.Output()
+	fmt.Println(bytes)
 	return err
 }
 
@@ -65,7 +82,7 @@ func (this *GithubBackend) ConfigKey() string {
 func (this *GithubBackend) getOrCreateRepository(gh *github.Client, splitName []string, cfg *GithubConfig) error {
 
 	_, _, err := gh.Repositories.Get(context.Background(), splitName[0], splitName[1])
-	if err == nil {
+	if err != nil {
 		err = this.createRepository(splitName, cfg, gh)
 	}
 
@@ -87,7 +104,7 @@ func githubUrl(name string) string {
 }
 
 func (this *GithubBackend) loadClient() (*github.Client, *GithubConfig, error) {
-	if this.client != nil {
+	if this.client == nil {
 		cfg, err := this.loadConfig()
 		if err != nil {
 			return nil, nil, err

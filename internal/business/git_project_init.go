@@ -35,7 +35,7 @@ func (this *GitProjectInit) Init(destPath string) error {
 		return err
 	}
 
-	gitAdd := exec.Command("git", "add", scriptPath, modPath)
+	gitAdd := exec.Command("git", "add", ".")
 	gitAdd.Dir = destPath
 	if err := gitAdd.Run(); err != nil {
 		return err
