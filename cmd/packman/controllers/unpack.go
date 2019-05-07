@@ -3,11 +3,9 @@ package controllers
 import (
 	"errors"
 	"fmt"
+	"github.com/securenative/packman/pkg"
 	"gopkg.in/urfave/cli.v2"
 )
-
-const PackageNameFlag = "package_name"
-const PackagePathFlag = "package_path"
 
 var UnpackCommand = cli.Command{
 	Name:      "unpack",
@@ -32,8 +30,8 @@ var UnpackCommand = cli.Command{
 		}
 
 		flags := flagsArray(context)
-		flags = append(flags, PackageNameFlag, packageName)
-		flags = append(flags, PackagePathFlag, path)
+		flags = append(flags, pkg.PackageNameFlag, packageName)
+		flags = append(flags, pkg.PackagePathFlag, path)
 
 		return PackmanModule.Unpacker.Unpack(packageName, path, flags)
 	},
