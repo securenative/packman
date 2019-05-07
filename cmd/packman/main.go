@@ -15,6 +15,7 @@ func main() {
 		&controllers.InitCommand,
 		&controllers.PackCommand,
 		&controllers.UnpackCommand,
+		&controllers.ConfigureCommand,
 	})
 	controllers.PackmanModule = module
 

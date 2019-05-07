@@ -8,8 +8,8 @@ import (
 
 type PackmanModule struct {
 	Config         PackmanConfig
-	configStore    data.ConfigStore
-	backend        data.Backend
+	ConfigStore    data.ConfigStore
+	Backend        data.Backend
 	templateEngine data.TemplateEngine
 	scriptEngine   data.ScriptEngine
 
@@ -33,8 +33,8 @@ func NewPackmanModule(config PackmanConfig, commands []*cli.Command) *PackmanMod
 
 	return &PackmanModule{
 		Config:         config,
-		configStore:    configStore,
-		backend:        backend,
+		ConfigStore:    configStore,
+		Backend:        backend,
 		templateEngine: template,
 		scriptEngine:   script,
 		ProjectInit:    init,
