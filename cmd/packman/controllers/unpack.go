@@ -35,7 +35,7 @@ var UnpackCommand = cli.Command{
 func flagsArray(ctx *cli.Context) []string {
 	out := make([]string, ctx.NumFlags())
 	for _, flagName := range ctx.FlagNames() {
-		out = append(out, ctx.String(flagName))
+		out = append(out, flagName, ctx.String(flagName))
 	}
 
 	return out
