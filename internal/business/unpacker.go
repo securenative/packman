@@ -40,7 +40,7 @@ func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string)
 		return err
 	}
 
-	return filepath.Walk(destPath, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(destPath, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() && !strings.Contains(path, ".git") && !strings.Contains(path, "packman") {
 			content, err := ioutil.ReadFile(path)
 			if err != nil {
@@ -58,4 +58,17 @@ func (this *PackmanUnpacker) Unpack(name string, destPath string, args []string)
 		}
 		return nil
 	})
+	if err != nil {
+		return err
+	}
+
+	if err := os.RemoveAll(filepath.Join(destPath, ".git")); err != nil {
+		return err
+	}
+
+	if err := os.RemoveAll(filepath.Join(destPath, "packman")); err != nil {
+		return err
+	}
+
+	return nil
 }
