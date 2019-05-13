@@ -2,6 +2,7 @@ package business
 
 import (
 	"github.com/securenative/packman/internal/data"
+	"github.com/securenative/packman/pkg"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
@@ -11,10 +12,11 @@ import (
 )
 
 const expected = `
-package my_pkg
+package my-pkg
 func main() {
 fmt.Println("Hello")
 fmt.Println("World")
+fmt.Println("my-pkg")
 }`
 
 func TestPackmanUnpacker_Unpack(t *testing.T) {
@@ -22,7 +24,7 @@ func TestPackmanUnpacker_Unpack(t *testing.T) {
 	unpacker := NewPackmanUnpacker(&mockBackend{}, data.NewGoTemplateEngine(), data.NewGoScriptEngine())
 
 	path := filepath.Join(os.TempDir(), "packtest", "unpack")
-	err := unpacker.Unpack("my-pkg", path, []string{"Hello", "World"})
+	err := unpacker.Unpack("my-pkg", path, []string{"--", pkg.PackageNameFlag, "my-pkg", "-a", "Hello", "-b", "World"})
 	assert.Nil(t, err)
 
 	bytes, err := ioutil.ReadFile(filepath.Join(path, "testfile.go"))
@@ -50,7 +52,7 @@ func (mockBackend) Pull(name string, destination string) error {
 package {{ .PackageName }}
 
 func main() {
-	{{ range .Args }}
+	{{ range .Flags }}
 	fmt.Println("{{ . }}")
 	{{ end }}
 }
