@@ -44,6 +44,7 @@ Now we are ready to push our template to Github by just doing:
 ```bash
 $> packman pack securenative/pm-template my-app-template
 ```
+![](docs/pack_github.png)
 
 And Voila! we just created our first template and pushed it to Github, Now anyone can pull it and use our template for its own use by just doing:
 ```bash
