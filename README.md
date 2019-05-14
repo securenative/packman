@@ -29,7 +29,7 @@ inside that folder you'll find another folder called `packman` which contains ou
 
 Now, lets create a simple file in the root folder:
 ```bash
-$> echo "Hello {{ .PackageName }}" > README.md
+$> echo "Hello [[[ .PackageName ]]]" > README.md
 ```
 Lets check how the rendered version of our newly created template will look like by running:
 ```bash
@@ -38,7 +38,7 @@ $> cat my-app-template-rendered/README.md
 Hello my-app-template
 ```
 
-Wow, the `{{ .PackageName }}` placeholder was replaced with our package name, miracles do exists :) 
+Wow, the `[[[ .PackageName ]]]` placeholder was replaced with our package name, miracles do exists :) 
 
 Lets assume that we are happy with our template and we want to publish it so other users can use as well, Packman uses Github as the package registry so lets configure our github account:
 ```bash
@@ -65,7 +65,7 @@ If you read and followed the `Quick Example` you may have many questions about p
 Understanding how packman works is crucial if you want to use it, but first lets define following:
 - **Project Template** - this is the un-rendered version of your project, will contain the template files and the activation script.
 - **Activation Script** - this script will be invoked by packman when calling `render`/`unpack`, the flags you give to these commands will be forwarded to the script file.
-The responsibility of this script is to create the data model that can be queried by Go's templating directives. (`{{ .PackageName }}` for example)
+The responsibility of this script is to create the data model that can be queried by Go's templating directives. (`[[[ .PackageName ]]]` for example)
 
 Packman uses a simple approach to render your project, at first packman will run you **Activation Script**, Let's examine the simplest form of an **Activation Script**
 ```go
@@ -94,7 +94,7 @@ func main() {
 	// The next step is to build our data model, the data model will be used by
 	// the template directives.
 	model := MyData{
-		PackageName: flags[pm.PackageNameFlag], // Here we can see that {{ .PackageName }} refers to this field 
+		PackageName: flags[pm.PackageNameFlag], // Here we can see that [[[ .PackageName ]]] refers to this field 
 		ProjectPath: flags[pm.PackagePathFlag], 
 		Flags: flags,
 	}

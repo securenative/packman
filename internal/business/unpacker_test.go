@@ -49,12 +49,12 @@ func (mockBackend) Pull(name string, destination string) error {
 	}
 
 	content := `
-package {{ .PackageName }}
+package [[[ .PackageName ]]]
 
 func main() {
-	{{ range .Flags }}
-	fmt.Println("{{ . }}")
-	{{ end }}
+	[[[ range .Flags ]]]
+	fmt.Println("[[[ . ]]]")
+	[[[ end ]]]
 }
 `
 	if err := ioutil.WriteFile(filepath.Join(destination, "testfile.go"), []byte(content), os.ModePerm); err != nil {
