@@ -7,7 +7,7 @@ import (
 
 func TestGoTemplateEngine_Render(t *testing.T) {
 
-	template := `Helo [[[ .Name ]]] this is test num: [[[ .Number ]]]`
+	template := `Helo {{{ .Name }}} this is test num: {{{ .Number }}}`
 	expected := `Helo World this is test num: 1`
 	type data struct {
 		Name   string
@@ -23,7 +23,7 @@ func TestGoTemplateEngine_Render(t *testing.T) {
 
 func TestGoTemplateEngine_Render_Missing_Arg(t *testing.T) {
 
-	template := `Helo [[[ .Name ]]] this is test num: [[[ .Number ]]]`
+	template := `Helo {{{ .Name }}} this is test num: {{{ .Number }}}`
 	type data struct {
 		Name string
 	}
