@@ -15,12 +15,8 @@ works simply enough for anyone to use.
 - A Github account token (only if you want to publish new packages)
 
 ## Quick Example
-First, lets install packman, assuming you've installed go correctly just use:
-```bash
-go get -u github.com/securenative/packman
-```
-
-Inorder to start a new template you may use packman's init, which generates the template seed:  
+First, lets install packman, assuming you've installed go correctly just download the binary from our release page.  
+In order to start a new template you may use packman's init, which generates the template seed:  
 ```bash
 $> packman init my-app-template
 ```  
