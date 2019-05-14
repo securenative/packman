@@ -3,16 +3,15 @@ Scaffolding was never that easy...
 
 ## Motivation
 At SecureNative, we manage lots of microservices and the job of creating a new
-project, wiring it up, importing our common libs is a tedious job and should be automated :)
+project, wiring it up, importing our common libs, etc.. is a tedious job and should be automated :)
 
-packman was created to tackle this issue, as there are other good scaffolding tools (such as Yeoman), we've just wanted a simple tool that 
-works simply enough for anyone to use.
+packman was created to tackle this issue, as there are other good scaffolding tools (such as Yeoman), we've just wanted a simple tool that works simply enough for anyone to use without scraffing the developer freedom.
 
 ## Prerequisites
 - Go 1.11 or above with [Go Modules enabled](https://github.com/golang/go/wiki/Modules#how-to-use-modules)
 - Basic knowledge of [Go's templating engine](https://curtisvermeeren.github.io/2017/09/14/Golang-Templates-Cheatsheet)
-- Git
-- A Github account token (only if you want to publish new packages)
+- Git installed and configured properly.
+- A Github account token (only if you want to publish new packages).
 
 ## Quick Example
 First, lets install packman, assuming you've installed go correctly just download the binary from our release page.  
@@ -36,7 +35,7 @@ Hello my-app-template
 
 Wow, the `{{{ .PackageName }}}` placeholder was replaced with our package name, miracles do exists :) 
 
-Lets assume that we are happy with our template and we want to publish it so other users can use as well, Packman uses Github as the package registry so lets configure our github account:
+Lets assume that we are happy with our template and we want to publish it so other users can use it as well, Packman uses Github as the package registry so lets configure our github account:
 ```bash
 $> packman config github --username matang28 --token <GITHUB_TOKEN> --private
 ```
@@ -54,7 +53,7 @@ $> cat my-app/README.md
 Hello securenative/pm-template
 ```
 
-That's it! now, with the help of the `packman` you can easily create your project template, and render it based on the data generated from your script file.
+That's it! now you can use `packman` whenever you want to automate your boilerplate.
 
 ## How it works
 If you read and followed the `Quick Example` you may have many questions about packman, we'll try to answer them now.  
@@ -63,7 +62,10 @@ Understanding how packman works is crucial if you want to use it, but first lets
 - **Activation Script** - this script will be invoked by packman when calling `render`/`unpack`, the flags you give to these commands will be forwarded to the script file.
 The responsibility of this script is to create the data model that can be queried by Go's templating directives. (`{{{ .PackageName }}}` for example)
 
-Packman uses a simple approach to render your project, at first packman will run you **Activation Script**, Let's examine the simplest form of an **Activation Script**
+Packman uses a simple approach to render your project, at first packman will run your **Activation Script**, your **Activation Script** is responsible for creating a data model that represents your project.
+*Then*, packman will go through your project tree rendering each file using Go's template engine and the data model provided by your **Activation Script**, and ... That's it!
+
+Let's examine the simplest form of an **Activation Script**
 ```go
 package main
 
@@ -100,8 +102,7 @@ func main() {
 }
 ```
 
-Next, packman will go through your project tree and render each file using Go's template engine and the data model provided by your **Activation Script**, and ... That's it!
-
+These concepts makes `packman` simple enough to understand but powerful enough to generate any kind of project.
 ## API
 
 ### New Project
