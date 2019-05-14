@@ -19,8 +19,11 @@ func (this *GoScriptEngine) Run(scriptFile string, args []string) error {
 	cmdArgs = append(cmdArgs, "--")
 	cmdArgs = append(cmdArgs, args...)
 
+	fmt.Println(fmt.Sprintf("Running main.go with %v", cmdArgs))
+
 	cmd := exec.Command("go", cmdArgs...)
-	result, err := cmd.Output()
+	//cmd.Dir = filepath.Dir(scriptFile)
+	result, err := cmd.CombinedOutput()
 	if err != nil {
 		return err
 	}

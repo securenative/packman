@@ -15,7 +15,7 @@ func NewGoTemplateEngine() *GoTemplateEngine {
 func (this *GoTemplateEngine) Render(templateText string, data interface{}) (string, error) {
 	var out bytes.Buffer
 	t := template.New("template")
-
+	t.Delims("{{{", "}}}")
 	tree, err := t.Parse(templateText)
 	if err != nil {
 		return "", err

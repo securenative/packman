@@ -1,6 +1,7 @@
 package business
 
 import (
+	"github.com/mingrammer/cfmt"
 	. "github.com/otiai10/copy"
 	"github.com/securenative/packman/internal/data"
 	"github.com/securenative/packman/pkg"
@@ -86,7 +87,8 @@ func (this *PackmanUnpacker) render(destPath string, args []string) error {
 	}
 
 	err = filepath.Walk(destPath, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() && !strings.Contains(path, ".git") && !strings.Contains(path, "packman") {
+		if !info.IsDir() && shouldRender(path) {
+			cfmt.Infof("Rendering %s\n", path)
 			content, err := ioutil.ReadFile(path)
 			if err != nil {
 				return err
@@ -108,4 +110,24 @@ func (this *PackmanUnpacker) render(destPath string, args []string) error {
 	}
 
 	return nil
+}
+
+func shouldRender(path string) bool {
+	if strings.Contains(path, ".git") {
+		return false
+	}
+
+	if strings.Contains(path, ".idea") {
+		return false
+	}
+
+	if strings.Contains(path, ".vscode") {
+		return false
+	}
+
+	if strings.Contains(path, "packman") {
+		return false
+	}
+
+	return true
 }
