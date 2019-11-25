@@ -6,7 +6,7 @@ GOTEST=$(GOCMD) test
 GOINSTALL=$(GOCMD) install
 
 build: test
-			$(GOBUILD) -o packman -v cmd/packman/main.go
+			$(GOBUILD) -o packman -v main.go
 run:
 			$(GORUN) .
 test:
