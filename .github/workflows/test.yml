@@ -28,6 +28,7 @@ jobs:
       run: go test -parallel 1 ./...
 
   integration_test:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Install Go
