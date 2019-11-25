@@ -73,7 +73,7 @@ func (this *genericScriptEngine) Run(scriptPath string, flags map[string]string)
 
 func pwdPath(scriptPath string, newName string) string {
 	fileName := filepath.Base(scriptPath)
-	scriptFolder := strings.ReplaceAll(scriptPath, fileName, "")
+	scriptFolder := strings.Replace(scriptPath, fileName, "", 1)
 	return filepath.Join(scriptFolder, newName)
 }
 
