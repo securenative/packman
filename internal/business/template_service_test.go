@@ -54,6 +54,7 @@ func TestTemplateService_Render(t *testing.T) {
 
 func TestTemplateService_Pack(t *testing.T) {
 	skipOnMissingEnv(t)
+	t.Skip()
 	gitPath := filepath.Join(os.TempDir(), "packman_service_test")
 	git := data.NewGitRemoteStorage(&envLocalStorage{})
 	defer os.RemoveAll(gitPath)
