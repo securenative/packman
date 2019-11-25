@@ -2,44 +2,32 @@ package main
 
 import (
 	"github.com/securenative/packman/cmd/packman/controllers"
-	"github.com/securenative/packman/cmd/packman/lib"
-	"gopkg.in/urfave/cli.v2"
+	"github.com/securenative/packman/internal/etc"
+	"github.com/urfave/cli"
 	"os"
-	"path/filepath"
 )
 
 func main() {
+	commands := []cli.Command{
+		controllers.PackController,
+		controllers.UnpackController,
+		controllers.RenderController,
 
-	cfg := parseConfig()
-	module := lib.NewPackmanModule(cfg, []*cli.Command{
-		&controllers.InitCommand,
-		&controllers.PackCommand,
-		&controllers.UnpackCommand,
-		&controllers.DryUnpackCommand,
-		&controllers.ConfigureCommand,
-	})
-	controllers.PackmanModule = module
+		controllers.AuthController,
+		controllers.ScriptEngineController,
+	}
 
 	app := cli.App{
 		Name:     "packman",
-		Version:  "0.1",
-		Commands: module.Commands,
+		Version:  "0.2",
+		Commands: commands,
 	}
 
 	err := app.Run(os.Args)
 	if err != nil {
-		panic(err.Error())
+		etc.PrintError(err.Error())
+		os.Exit(1)
+	} else {
+		os.Exit(0)
 	}
-}
-
-func parseConfig() lib.PackmanConfig {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		panic(err.Error())
-	}
-	configPath := filepath.Join(home, ".packman")
-	cfg := lib.PackmanConfig{
-		ConfigPath: configPath,
-	}
-	return cfg
 }
