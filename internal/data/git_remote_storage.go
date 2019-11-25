@@ -1,6 +1,7 @@
 package data
 
 import (
+	"github.com/securenative/packman/internal/etc"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
@@ -32,6 +33,7 @@ func (this *gitRemoteStorage) getAuth() transport.AuthMethod {
 }
 
 func (this *gitRemoteStorage) Pull(remotePath string, localPath string) error {
+	etc.PrintInfo("Pulling %s into %s...\n", remotePath, localPath)
 	_, err := git.PlainClone(localPath, false, &git.CloneOptions{
 		URL:      remotePath,
 		Auth:     this.getAuth(),
@@ -79,6 +81,6 @@ func (this *gitRemoteStorage) Push(localPath string, remotePath string) error {
 	if err != nil {
 		return err
 	}
-
+	etc.PrintSuccess("Project was pushed to %s successfully.\n", remotePath)
 	return nil
 }

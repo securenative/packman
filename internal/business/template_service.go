@@ -45,8 +45,16 @@ func (this *templateService) Render(templatePath string, packagePath string, fla
 		}
 		return nil
 	})
+	if err != nil {
+		return err
+	}
 
-	return err
+	err = os.RemoveAll(filepath.Join(packagePath, "packman"))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (this *templateService) Pack(remoteUrl string, packagePath string) error {

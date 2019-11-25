@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/securenative/packman/internal"
+	"github.com/securenative/packman/internal/etc"
 	"github.com/urfave/cli"
 )
 
@@ -17,16 +18,12 @@ var RenderController = cli.Command{
 }
 
 func render(c *cli.Context) error {
-	if c.NArg() != 1 {
+	if c.NArg() < 1 {
 		return fmt.Errorf("unpack expects exactly 1 argument but got %d arguments", c.NArg())
 	}
 
 	path := c.Args().Get(0)
-	flagsMap := make(map[string]string)
-
-	for _, flagName := range c.FlagNames() {
-		flagsMap[flagName] = c.String(flagName)
-	}
+	flagsMap := etc.ArgsToFlagsMap(c.Args()[1:])
 
 	return internal.M.TemplatingService.Render(path, fmt.Sprintf("%s-rendered", path), flagsMap)
 }

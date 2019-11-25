@@ -3,6 +3,8 @@ package internal
 import (
 	"github.com/securenative/packman/internal/business"
 	"github.com/securenative/packman/internal/data"
+	"os"
+	"path/filepath"
 )
 
 type Module struct {
@@ -18,7 +20,13 @@ type Module struct {
 var M *Module
 
 func init() {
-	localStorage, err := data.NewFileLocalStorage("")
+	home, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	localFilePath := filepath.Join(home, "packman_config.json")
+	localStorage, err := data.NewFileLocalStorage(localFilePath)
 	if err != nil {
 		panic(err)
 	}

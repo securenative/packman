@@ -35,17 +35,23 @@ func (this *genericScriptEngine) Run(scriptPath string, flags map[string]string)
 	cmdArgs = append(cmdArgs, replyFile)
 
 	cmd := exec.Command(mainCommand, cmdArgs...)
-	etc.PrintInfo(fmt.Sprintf("Running %s script file with: '%s'\n", scriptPath, cmd.String()))
+	etc.PrintInfo(fmt.Sprintf("Running '%s'", cmd.String()))
 	result, err := cmd.CombinedOutput()
 	if err != nil {
+		if result != nil {
+			etc.PrintError(" FAILED\n")
+			etc.PrintError(string(result) + "\n")
+		}
 		return nil, err
 	}
+	etc.PrintSuccess(" OK\n")
+	etc.PrintResponse(string(result))
 
-	etc.PrintResponse(string(result) + "\n")
-	etc.PrintSuccess("Script was run successfully.\n")
-	etc.PrintInfo("Trying to read reply file: %s...\n", replyFile)
+	etc.PrintInfo("Trying to read reply file: %s...", replyFile)
 	content, err := etc.ReadFile(replyFile)
 	if err != nil {
+		etc.PrintError(" FAILED\n")
+		etc.PrintError("Unable to read reply file from: %s\n", replyFile)
 		return nil, err
 	}
 
@@ -57,6 +63,9 @@ func (this *genericScriptEngine) Run(scriptPath string, flags map[string]string)
 
 	os.Remove(flagsFile)
 	os.Remove(replyFile)
+
+	etc.PrintSuccess(" OK\n")
+	etc.PrettyPrintJson(out)
 
 	return out, nil
 }
