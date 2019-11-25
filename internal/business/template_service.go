@@ -39,6 +39,10 @@ func (this *templateService) Render(templatePath string, packagePath string, fla
 	}
 
 	err = filepath.Walk(packagePath, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() && strings.Contains(path, ".") {
+			return nil
+		}
+
 		ierr := this.templateEngine.Run(path, scriptData)
 		if ierr != nil {
 			return ierr
