@@ -3,10 +3,12 @@ package data
 import (
 	"github.com/securenative/packman/internal/etc"
 	"gopkg.in/src-d/go-git.v4"
+	"gopkg.in/src-d/go-git.v4/plumbing"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -34,10 +36,17 @@ func (this *gitRemoteStorage) getAuth() transport.AuthMethod {
 
 func (this *gitRemoteStorage) Pull(remotePath string, localPath string) error {
 	etc.PrintInfo("Pulling %s into %s...\n", remotePath, localPath)
+
+	remote := strings.Split(remotePath, "@")
+	if len(remote) == 1 {
+		remote = append(remote, "master")
+	}
+
 	_, err := git.PlainClone(localPath, false, &git.CloneOptions{
-		URL:      remotePath,
-		Auth:     this.getAuth(),
-		Progress: os.Stdout,
+		URL:           remote[0],
+		Auth:          this.getAuth(),
+		Progress:      os.Stdout,
+		ReferenceName: plumbing.NewBranchReferenceName(remote[1]),
 	})
 	if err != nil {
 		return err
