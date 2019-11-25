@@ -20,8 +20,7 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
       run: go test ./...
 
-  build:
-    release-linux-amd64:
+  release-linux-amd64:
       name: release linux/amd64
       runs-on: ubuntu-latest
       steps:
