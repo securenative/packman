@@ -35,7 +35,8 @@ func (this *genericScriptEngine) Run(scriptPath string, flags map[string]string)
 	cmdArgs = append(cmdArgs, replyFile)
 
 	cmd := exec.Command(mainCommand, cmdArgs...)
-	etc.PrintInfo(fmt.Sprintf("Running '%s'", cmd.String()))
+
+	etc.PrintInfo(fmt.Sprintf("Running '%s %v'", mainCommand, cmdArgs))
 	result, err := cmd.CombinedOutput()
 	if err != nil {
 		if result != nil {
