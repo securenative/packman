@@ -6,6 +6,9 @@ import (
 	"os"
 )
 
+const PackageNameFlag = "package_name"
+const PackagePathFlag = "package_path"
+
 func ReadFlags() map[string]string {
 	var out map[string]string
 	path := os.Args[1]
