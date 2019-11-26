@@ -19,7 +19,7 @@ func main() {
 
 	app := cli.App{
 		Name:     "packman",
-		Version:  "0.3",
+		Version:  "0.4",
 		Commands: commands,
 	}
 

@@ -43,7 +43,7 @@ func (this *templateService) Render(templatePath string, packagePath string, fla
 	}
 
 	err = filepath.Walk(packagePath, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
+		if shouldSkip(info, path) {
 			return nil
 		}
 
@@ -96,4 +96,14 @@ func toScriptPath(prefix string) (string, error) {
 		}
 	}
 	return "", fmt.Errorf("in order for packman to work you must have a 'main.*' file within your packman folder")
+}
+
+func shouldSkip(info os.FileInfo, path string) bool {
+	if info.IsDir() {
+		return true
+	}
+	if strings.Contains(path, ".git") {
+		return true
+	}
+	return false
 }

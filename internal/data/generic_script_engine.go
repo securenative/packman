@@ -30,11 +30,12 @@ func (this *genericScriptEngine) Run(scriptPath string, flags map[string]string)
 
 	var cmdArgs []string
 	cmdArgs = append(cmdArgs, args...)
-	cmdArgs = append(cmdArgs, scriptPath)
-	cmdArgs = append(cmdArgs, flagsFile)
-	cmdArgs = append(cmdArgs, replyFile)
+	cmdArgs = append(cmdArgs, filepath.Base(scriptPath))
+	cmdArgs = append(cmdArgs, panicOrString(filepath.Abs, flagsFile))
+	cmdArgs = append(cmdArgs, panicOrString(filepath.Abs, replyFile))
 
 	cmd := exec.Command(mainCommand, cmdArgs...)
+	cmd.Dir = filepath.Dir(scriptPath)
 
 	etc.PrintInfo(fmt.Sprintf("Running '%s %v'", mainCommand, cmdArgs))
 	result, err := cmd.CombinedOutput()
@@ -83,4 +84,12 @@ func splitCommand(command string) (string, []string, error) {
 		return parts[0], parts[1:], nil
 	}
 	return "", nil, fmt.Errorf("cannot parse command %s, the command syntax should be as follows: 'commnad arg1 arg2 arg3 ...'", command)
+}
+
+func panicOrString(f func(s string) (string, error), s string) string {
+	str, err := f(s)
+	if err != nil {
+		panic(err)
+	}
+	return str
 }
