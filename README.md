@@ -64,8 +64,8 @@ packman auth <USERNAME> <PASSWORD>
 While the default script engine uses GO and as much as we love GO at SecureNative, `packman` was built as an un-opinionated tool so we don't impose any limit on your scripting capabilities.  
 You can use any language to write scripts, damn, you can even use bash scripts to generate your template as long as you respect the interface with `packman`.  
 `packman` scripts defines 2 standards that you must comply to:
-1) The script will be executed with 2 command-line arguments, the path to the flags.json file and the path to save the reply.json file.
-2) The script has to write its reply (as json) to the reply path (provided as a cli argument)
+1) The script will be executed with 2 additional command-line arguments, the path to the flags.json file and the path to save the reply.json file.
+2) The script has to write its reply (as json) to the reply path (provided as a cli argument)  
 You can see its pretty simple requirements to fulfil, you can check [this code](https://github.com/securenative/packman/blob/master/pkg/packman.go) to better understand it.   
 
 ```bash
