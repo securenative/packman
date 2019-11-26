@@ -3,7 +3,7 @@ Project Scaffolding for Professionals
 
 ## Motivation
 At SecureNative, we push new micro-services on a daily basis and the job of creating new projects, wiring it up, importing our common libs, etc.. is a tedious job and should be automated :)  
-Enters `packman`, a simple tool allows you to generate boilerplate without sacrificing your freedom as a developer. No new DSL to learn, no weird config files to edit a tool written for developers by developers.
+Enters `packman`, a simple tool allows you to generate boilerplate without sacrificing your freedom as a developer. No new DSL to learn, no weird config files to edit.  
 
 ## Prerequisites
 - Go 1.11 or above with [Go Modules enabled](https://github.com/golang/go/wiki/Modules#how-to-use-modules)
@@ -66,6 +66,7 @@ You can use any language to write scripts, damn, you can even use bash scripts t
 `packman` scripts defines 2 standards that you must comply to:
 1) The script will be executed with 2 additional command-line arguments, the path to the flags.json file and the path to save the reply.json file.
 2) The script has to write its reply (as json) to the reply path (provided as a cli argument)  
+
 You can see its pretty simple requirements to fulfil, you can check [this code](https://github.com/securenative/packman/blob/master/pkg/packman.go) to better understand it.   
 
 ```bash
