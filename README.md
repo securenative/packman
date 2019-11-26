@@ -3,7 +3,9 @@ Project Scaffolding for Professionals
 
 ## Motivation
 At SecureNative, we push new micro-services on a daily basis and the job of creating new projects, wiring it up, importing our common libs, etc.. is a tedious job and should be automated :)  
-Enters `packman`, a simple tool allows you to generate boilerplate without sacrificing your freedom as a developer. No new DSL to learn, no weird config files to edit.  
+`packman` is a simple tool that allows you to generate boilerplate without sacrificing your freedom as a developer, no new DSL to learn, no weird config files to edit, only you and your favourite language decides the limits.
+
+We are using `packman` intensively at SecureNative 
 
 ## Prerequisites
 - Go 1.11 or above with [Go Modules enabled](https://github.com/golang/go/wiki/Modules#how-to-use-modules)
@@ -15,6 +17,15 @@ If you have golang installed just use:
 `go get -u github.com/securenative/packman`
 
 You can also use one of the pre-built binaries from our [releases page](https://github.com/securenative/packman/releases)
+
+after that you can use `packman` to get templates, try it now:  
+```bash
+packman unpack \
+    https://github.com/securenative/packman-init \
+    packmanExample \
+    -author matan \
+    -company SecureNative
+```
 
 ## API Reference
 
