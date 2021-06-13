@@ -2,12 +2,21 @@ package packman
 
 import (
 	"encoding/json"
+	"github.com/AdikaStyle/packman/internal"
 	"io/ioutil"
 	"os"
 )
 
-const PackageNameFlag = "package_name"
-const PackagePathFlag = "package_path"
+const PackageNameFlag = internal.PackageName
+const PackagePathFlag = internal.PackagePath
+
+func Unpack(remote, path string, flagsMap map[string]string) error {
+	return internal.M.TemplatingService.Unpack(remote, path, flagsMap)
+}
+
+func Auth(username, password string) error {
+	return internal.M.ConfigService.SetAuth(username, password)
+}
 
 func ReadFlags() map[string]string {
 	var out map[string]string
