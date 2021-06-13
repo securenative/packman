@@ -3,12 +3,13 @@ package packman
 import (
 	"encoding/json"
 	"github.com/AdikaStyle/packman/internal"
+	"github.com/AdikaStyle/packman/internal/business"
 	"io/ioutil"
 	"os"
 )
 
-const PackageNameFlag = internal.PackageName
-const PackagePathFlag = internal.PackagePath
+const PackageNameFlag = business.PackageName
+const PackagePathFlag = business.PackagePath
 
 func Unpack(remote, path string, flagsMap map[string]string) error {
 	return internal.M.TemplatingService.Unpack(remote, path, flagsMap)
