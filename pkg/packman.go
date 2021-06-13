@@ -2,8 +2,8 @@ package packman
 
 import (
 	"encoding/json"
-	"github.com/AdikaStyle/packman/internal"
-	"github.com/AdikaStyle/packman/internal/business"
+	"github.com/securenative/packman/internal"
+	"github.com/securenative/packman/internal/business"
 	"io/ioutil"
 	"os"
 )
