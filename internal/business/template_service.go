@@ -4,12 +4,14 @@ import (
 	"fmt"
 	copy2 "github.com/otiai10/copy"
 	"github.com/securenative/packman/internal/data"
-	packman "github.com/securenative/packman/pkg"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 )
+
+const PackageName = "package_name"
+const PackagePath = "package_path"
 
 type templateService struct {
 	remoteStorage  data.RemoteStorage
@@ -29,8 +31,8 @@ func (this *templateService) Render(templatePath string, packagePath string, fla
 		}
 	}
 
-	flags[packman.PackagePathFlag] = packagePath
-	flags[packman.PackageNameFlag] = filepath.Base(packagePath)
+	flags[PackagePath] = packagePath
+	flags[PackageName] = filepath.Base(packagePath)
 
 	scriptPath, err := toScriptPath(packagePath)
 	if err != nil {
