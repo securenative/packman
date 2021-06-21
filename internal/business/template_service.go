@@ -104,7 +104,7 @@ func shouldSkip(info os.FileInfo, path string) bool {
 	if info.IsDir() {
 		return true
 	}
-	if strings.Contains(path, "/.git") {
+	if strings.Contains(path, ".git/") {
 		return true
 	}
 	return false
